@@ -1823,6 +1823,13 @@
 #define STARTUP_CHIME
 
 //
+// ENDSTOP BEEP
+//
+// Short 2KHz beep when endstops are hit
+//
+#define ENDSTOP_BEEP
+
+//
 // The duration and frequency for the UI feedback sound.
 // Set these to 0 to disable audio feedback in the LCD menus.
 //

@@ -373,6 +373,25 @@ void disable_all_steppers() {
   disable_e_steppers();
 }
 
+#ifdef ENDSTOP_BEEP
+  void EndstopBeep() {
+    static char last_status=((READ(X_MIN_PIN)<<2)|(READ(Y_MIN_PIN)<<1)|READ(X_MAX_PIN));
+    static unsigned char now_status;
+
+    now_status=((READ(X_MIN_PIN)<<2)|(READ(Y_MIN_PIN)<<1)|READ(X_MAX_PIN))&0xff;
+
+    if(now_status<last_status) {
+      static millis_t endstop_ms = millis() + 300UL;
+      if (ELAPSED(millis(), endstop_ms)) {
+        buzzer.tone(60, 2000);
+      }
+    last_status=now_status;
+    } else if(now_status!=last_status) {
+      last_status=now_status;
+    }
+  }
+#endif
+
 #if ENABLED(G29_RETRY_AND_RECOVER)
 
   void event_probe_failure() {
@@ -701,6 +720,10 @@ void idle(TERN_(ADVANCED_PAUSE_FEATURE, bool no_stepper_sleep/*=false*/)) {
 
   // Max7219 heartbeat, animation, etc
   TERN_(MAX7219_DEBUG, max7219.idle_tasks());
+
+  #ifdef ENDSTOP_BEEP
+    EndstopBeep();
+  #endif
 
   // Return if setup() isn't completed
   if (marlin_state == MF_INITIALIZING) return;
