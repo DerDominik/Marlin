@@ -317,38 +317,53 @@ void AnycubicTFTClass::HandleSpecialMenu() {
         #else // if ENABLED(PROBE_MANUALLY)
           case '0':
             switch (SelectedDirectory[2]) {
-              case '1': // "<01PrehtBed>"
+
+              case '1': // "<01Lvl1Point>"
+                SERIAL_ECHOLNPGM("Special Menu: Level 1st Point");
+                ExtUI::injectCommands_P(PSTR("G28\nG1 Z5\nG1 X10 Y10 Z1 F3600"));
+                break;
+
+              case '2': // "<02Lvl2Point>"
+                SERIAL_ECHOLNPGM("Special Menu: Level 2nd Point");
+                ExtUI::injectCommands_P(PSTR("G1 X206 Y10 Z1 F3600"));
+                break;
+
+              case '3': // "<03Lvl3Point>"
+                SERIAL_ECHOLNPGM("Special Menu: Level 3rd Point");
+                ExtUI::injectCommands_P(PSTR("G1 X206 Y206 Z1 F3600"));
+                break;
+
+              case '4': // "<04ZDn1.0>"
+                SERIAL_ECHOLNPGM("Special Menu: Z Down 1.0");
+                ExtUI::injectCommands_P(PSTR("G91\nG1 Z-1.0 F3600\nG90"));
+                break;
+
+              case '5': // "<05Lvl4Point>"
+                SERIAL_ECHOLNPGM("Special Menu: Level 4th Point");
+                ExtUI::injectCommands_P(PSTR("G1 X10 Y206 Z1 F3600"));
+                break;
+
+              case '6': // "<06PrehtBed>"
                 SERIAL_ECHOLNPGM("Special Menu: Preheat Bed");
                 ExtUI::injectCommands_P(PSTR("M140 S65"));
                 break;
 
-              case '2': // "<02ABL>"
+              case '7': // "<07ABL>"
                 SERIAL_ECHOLNPGM("Special Menu: Auto Bed Leveling");
                 ExtUI::injectCommands_P(PSTR("G28\nG29"));
                 break;
 
-              case '3': // "<03HtendPID>"
-                SERIAL_ECHOLNPGM("Special Menu: Auto Tune Hotend PID");
-                // need to dwell for half a second to give the fan a chance to start before the pid tuning starts
-                ExtUI::injectCommands_P(PSTR("M106 S204\nG4 P500\nM303 E0 S215 C15 U1"));
-                break;
-
-              case '4': // "<04HtbedPID>"
-                SERIAL_ECHOLNPGM("Special Menu: Auto Tune Hotbed Pid");
-                ExtUI::injectCommands_P(PSTR("M303 E-1 S65 C6 U1"));
-                break;
-
-              case '5': // "<05FWDeflts>"
+              case '8': // "<08FWDeflts>"
                 SERIAL_ECHOLNPGM("Special Menu: Load FW Defaults");
                 ExtUI::injectCommands_P(PSTR("M502\nM300 P105 S1661\nM300 P210 S1108"));
                 break;
 
-              case '6': // "<06SvEEPROM>"
+              case '9': // "<09SvEEPROM>"
                 SERIAL_ECHOLNPGM("Special Menu: Save EEPROM");
                 ExtUI::injectCommands_P(PSTR("M500\nM300 P105 S1108\nM300 P210 S1661"));
                 break;
 
-              case '7': // <07SendM108>
+              case '10': // <10SendM108>
                 SERIAL_ECHOLNPGM("Special Menu: Send User Confirmation");
                 ExtUI::injectCommands_P(PSTR("M108"));
                 break;
@@ -436,22 +451,31 @@ void AnycubicTFTClass::RenderSpecialMenu(uint16_t selectedNumber) {
         break;
     #else
       case 0: // First Page
-        SENDLINE_PGM("<01PrehtBed>");
-        SENDLINE_PGM("<Preheat bed>");
-        SENDLINE_PGM("<02ABL>");
-        SENDLINE_PGM("<Auto Bed Leveling>");
-        SENDLINE_PGM("<03HtEndPID>");
-        SENDLINE_PGM("<Auto Tune Hotend PID>");
-        SENDLINE_PGM("<04HtBedPID>");
-        SENDLINE_PGM("<Auto Tune Hotbed PID>");
+        SENDLINE_PGM("<01Lvl1Point>");
+        SENDLINE_PGM("<Level 1st Point>");
+        SENDLINE_PGM("<02Lvl2Point>");
+        SENDLINE_PGM("<Level 2nd Point>");
+        SENDLINE_PGM("<03Lvl3Point>");
+        SENDLINE_PGM("<Level 3rd Point>");
+        SENDLINE_PGM("<04ZDn1.0>");
+        SENDLINE_PGM("<Z Down 1.0>");
         break;
 
       case 4: // Second Page
-        SENDLINE_PGM("<05FWDeflts>");
+        SENDLINE_PGM("<05Lvl4Point>");
+        SENDLINE_PGM("<Level 4th Point>");
+        SENDLINE_PGM("<06PrehtBed>");
+        SENDLINE_PGM("<Preheat bed>");
+        SENDLINE_PGM("<07ABL>");
+        SENDLINE_PGM("<Auto Bed Leveling>");
+        SENDLINE_PGM("<08FWDeflts>");
         SENDLINE_PGM("<Load FW Defaults>");
-        SENDLINE_PGM("<06SvEEPROM>");
+        break;
+
+      case 8: // Third Page
+        SENDLINE_PGM("<09SvEEPROM>");
         SENDLINE_PGM("<Save EEPROM>");
-        SENDLINE_PGM("<07SendM108>");
+        SENDLINE_PGM("<10SendM108>");
         SENDLINE_PGM("<Send User Confirmation>");
         SENDLINE_PGM("<Exit>");
         SENDLINE_PGM("<Exit>");
