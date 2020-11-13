@@ -325,12 +325,12 @@ void AnycubicTFTClass::HandleSpecialMenu() {
 
               case '2': // "<02Lvl2Point>"
                 SERIAL_ECHOLNPGM("Special Menu: Level 2nd Point");
-                ExtUI::injectCommands_P(PSTR("G1 X206 Y10 Z1 F3600"));
+                ExtUI::injectCommands_P(PSTR("G91\nG1 Z+2.0 F3600\nG90\nG1 X206 Y10 Z1 F3600"));
                 break;
 
               case '3': // "<03Lvl3Point>"
                 SERIAL_ECHOLNPGM("Special Menu: Level 3rd Point");
-                ExtUI::injectCommands_P(PSTR("G1 X206 Y206 Z1 F3600"));
+                ExtUI::injectCommands_P(PSTR("G91\nG1 Z+2.0 F3600\nG90\nG1 X206 Y206 Z1 F3600"));
                 break;
 
               case '4': // "<04ZDn1.0>"
@@ -340,7 +340,7 @@ void AnycubicTFTClass::HandleSpecialMenu() {
 
               case '5': // "<05Lvl4Point>"
                 SERIAL_ECHOLNPGM("Special Menu: Level 4th Point");
-                ExtUI::injectCommands_P(PSTR("G1 X10 Y206 Z1 F3600"));
+                ExtUI::injectCommands_P(PSTR("G91\nG1 Z+2.0 F3600\nG90\nG1 X10 Y206 Z1 F3600"));
                 break;
 
               case '6': // "<06PrehtBed>"
